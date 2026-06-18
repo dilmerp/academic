@@ -1,0 +1,68 @@
+<div class="flex h-screen w-full font-sans bg-slate-50">
+
+  <div class="hidden md:flex flex-1 flex-col justify-center items-center bg-slate-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-blue-600/10 [mask-image:radial-gradient(ellipse_at_center,black,transparent)]"></div>
+
+    <div class="relative z-10 text-center px-8">
+      <div class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/30">
+        <i class="pi pi-graduation-cap text-4xl"></i>
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight mb-2">System Academic</h1>
+      <p class="text-slate-400 text-lg">Plataforma de Gestión Educativa Integral</p>
+    </div>
+  </div>
+
+  <div class="flex-1 flex justify-center items-center bg-white shadow-[-10px_0_30px_rgba(0,0,0,0.03)] z-10">
+    <div class="w-full max-w-md p-8">
+      <h2 class="text-3xl font-bold text-slate-800 mb-1">Iniciar Sesión</h2>
+      <p class="text-slate-500 mb-8">Ingresa tus credenciales institucionales</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+        <div>
+          <label for="login" class="block text-sm font-semibold text-slate-700 mb-1">Usuario Institucional</label>
+          <input
+            type="text"
+            id="login"
+            formControlName="login"
+            placeholder="Ej: dpalomino"
+            class="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            [class.border-red-500]="loginForm.get('login')?.invalid && loginForm.get('login')?.touched"
+          >
+        </div>
+
+        <div>
+          <label for="clave" class="block text-sm font-semibold text-slate-700 mb-1">Contraseña</label>
+          <input
+            type="password"
+            id="clave"
+            formControlName="clave"
+            placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-lg border border-slate-300 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          >
+        </div>
+
+        <div *ngIf="errorMessage" class="p-3 bg-red-50 text-red-600 rounded-lg flex items-center gap-2 border border-red-200 text-sm">
+          <i class="pi pi-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="isLoading || loginForm.invalid"
+          class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2 mt-4"
+        >
+          <ng-container *ngIf="!isLoading">
+            <span>Ingresar al Sistema</span>
+            <i class="pi pi-arrow-right text-sm"></i>
+          </ng-container>
+          <ng-container *ngIf="isLoading">
+            <i class="pi pi-spinner pi-spin"></i>
+            <span>Verificando...</span>
+          </ng-container>
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>

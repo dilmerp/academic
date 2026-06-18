@@ -1,0 +1,159 @@
+Solucion: Academic
+├── 📂 Academic.Api
+│   ├── 📎 Academic.Infrastructure
+│   ├── 📎 Academic.Application
+│   └── 📎 Academic.Persistence
+│   ├── 📂 Controllers
+│   │   ├── 📄 AlumnosController.cs
+│   │   ├── 📄 MaestrosController.cs
+│   │   ├── 📄 MatriculasController.cs
+│   │   └── 📄 ProfesoresController.cs
+│   ├── 📂 ExceptionHandlers
+│   │   └── 📄 GlobalExceptionHandler.cs
+│   ├── 📂 Properties
+│   └── 📄 Program.cs
+├── 📂 Academic.Application
+│   └── 📎 Academic.Domain
+│   ├── 📂 Behaviors
+│   │   ├── 📄 CachingBehavior.cs
+│   │   └── 📄 ValidationBehavior.cs
+│   ├── 📂 DTOs
+│   │   ├── 📄 AlumnoCreadoDto.cs
+│   │   ├── 📄 AlumnoDto.cs
+│   │   ├── 📄 DistribucionAlumnoDto.cs
+│   │   ├── 📄 DistribucionCursoDto.cs
+│   │   ├── 📄 MatriculaProgramaDto.cs
+│   │   ├── 📄 MatriculaResponseDto.cs
+│   │   └── 📄 ProfesorDto.cs
+│   ├── 📂 Interfaces
+│   │   └── 📄 ICacheableQuery.cs
+│   ├── 📂 UseCases
+│   │   ├── 📂 Alumnos
+│   │   │   ├── 📂 Commands
+│   │   │   │   ├── 📂 CreateAlumno
+│   │   │   │   │   ├── 📄 CreateAlumnoCommand.cs
+│   │   │   │   │   ├── 📄 CreateAlumnoCommandHandler.cs
+│   │   │   │   │   └── 📄 CreateAlumnoCommandValidator.cs
+│   │   │   │   ├── 📂 DeleteAlumno
+│   │   │   │   │   ├── 📄 DeleteAlumnoCommand.cs
+│   │   │   │   │   ├── 📄 DeleteAlumnoCommandHandler.cs
+│   │   │   │   │   └── 📄 DeleteAlumnoCommandValidator.cs
+│   │   │   │   └── 📂 UpdateAlumno
+│   │   │   │       ├── 📄 UpdateAlumnoCommand.cs
+│   │   │   │       ├── 📄 UpdateAlumnoCommandHandler.cs
+│   │   │   │       └── 📄 UpdateAlumnoCommandValidator.cs
+│   │   │   └── 📂 Queries
+│   │   │       ├── 📂 GetAllAlumnos
+│   │   │       │   ├── 📄 GetAllAlumnosHandler.cs
+│   │   │       │   └── 📄 GetAllAlumnosQuery.cs
+│   │   │       ├── 📂 GetAlumnoById
+│   │   │       │   ├── 📄 GetAlumnoByIdQuery.cs
+│   │   │       │   └── 📄 GetAlumnoByIdQueryHandler.cs
+│   │   │       └── 📂 SearchAlumnos
+│   │   │           ├── 📄 SearchAlumnosHandler.cs
+│   │   │           └── 📄 SearchAlumnosQuery.cs
+│   │   ├── 📂 Maestros
+│   │   │   └── 📂 Queries
+│   │   │       ├── 📂 GetBecas
+│   │   │       │   └── 📄 GetBecasQuery.cs
+│   │   │       ├── 📂 GetCursos
+│   │   │       │   └── 📄 GetCursosQuery.cs
+│   │   │       ├── 📂 GetCursosByPromocion
+│   │   │       │   ├── 📄 GetCursosByPromocionHandler.cs
+│   │   │       │   └── 📄 GetCursosByPromocionQuery.cs
+│   │   │       ├── 📂 GetEstadosCiviles
+│   │   │       │   └── 📄 GetEstadosCivilesQuery.cs
+│   │   │       ├── 📂 GetGrupos
+│   │   │       │   ├── 📄 GetGruposHandler.cs
+│   │   │       │   └── 📄 GetGruposQuery.cs
+│   │   │       ├── 📂 GetPlanesPago
+│   │   │       │   └── 📄 GetPlanesPagoQuery.cs
+│   │   │       ├── 📂 GetPromociones
+│   │   │       │   ├── 📄 GetPromocionesHandler.cs
+│   │   │       │   └── 📄 GetPromocionesQuery.cs
+│   │   │       ├── 📂 GetTenores
+│   │   │       │   └── 📄 GetTenoresQuery.cs
+│   │   │       └── 📂 GetTiposDocumento
+│   │   │           └── 📄 GetTiposDocumentoQuery.cs
+│   │   ├── 📂 Matriculas
+│   │   │   ├── 📂 Commands
+│   │   │   │   ├── 📂 RegistrarMatriculaCarrera
+│   │   │   │   │   ├── 📄 RegistrarMatriculaCarreraCommand.cs
+│   │   │   │   │   ├── 📄 RegistrarMatriculaCarreraHandler.cs
+│   │   │   │   │   └── 📄 RegistrarMatriculaCarreraValidator.cs
+│   │   │   │   └── 📂 RegistrarMatriculaPrograma
+│   │   │   │       ├── 📄 RegistrarMatriculaProgramaCommand.cs
+│   │   │   │       ├── 📄 RegistrarMatriculaProgramaCommandHandler.cs
+│   │   │   │       └── 📄 RegistrarMatriculaProgramaValidator.cs
+│   │   │   └── 📂 Queries
+│   │   │       ├── 📂 GetMatriculadosByPromocion
+│   │   │       │   ├── 📄 GetMatriculadosByPromocionHandler.cs
+│   │   │       │   └── 📄 GetMatriculadosByPromocionQuery.cs
+│   │   │       ├── 📂 GetMatriculasByAlumno
+│   │   │       │   ├── 📄 GetMatriculasByAlumnoHandler.cs
+│   │   │       │   └── 📄 GetMatriculasByAlumnoQuery.cs
+│   │   │       └── 📂 GetMatriculasPrograma
+│   │   │           ├── 📄 GetMatriculasProgramaHandler.cs
+│   │   │           └── 📄 GetMatriculasProgramaQuery.cs
+│   │   └── 📂 Profesores
+│   │       ├── 📂 Commands
+│   │       │   ├── 📂 CreateProfesor
+│   │       │   │   ├── 📄 CreateProfesorCommand.cs
+│   │       │   │   ├── 📄 CreateProfesorHandler.cs
+│   │       │   │   └── 📄 CreateProfesorValidator.cs
+│   │       │   ├── 📂 DeleteProfesor
+│   │       │   │   ├── 📄 DeleteProfesorCommand.cs
+│   │       │   │   ├── 📄 DeleteProfesorHandler.cs
+│   │       │   │   └── 📄 DeleteProfesorValidator.cs
+│   │       │   └── 📂 UpdateProfesor
+│   │       │       ├── 📄 UpdateProfesorCommand.cs
+│   │       │       ├── 📄 UpdateProfesorHandler.cs
+│   │       │       └── 📄 UpdateProfesorValidator.cs
+│   │       └── 📂 Queries
+│   │           ├── 📂 GetAllProfesores
+│   │           │   ├── 📄 GetAllProfesoresHandler.cs
+│   │           │   └── 📄 GetAllProfesoresQuery.cs
+│   │           └── 📂 GetProfesorById
+│   │               ├── 📄 GetProfesorByIdHandler.cs
+│   │               └── 📄 GetProfesorByIdQuery.cs
+│   └── 📄 DependencyInjection.cs
+├── 📂 Academic.Domain
+│   ├── 📂 Entities
+│   │   ├── 📄 Alumno.cs
+│   │   ├── 📄 AlumnoInfo.cs
+│   │   ├── 📄 BecaItem.cs
+│   │   ├── 📄 GrupoPromocionItem.cs
+│   │   ├── 📄 MaestroItem.cs
+│   │   ├── 📄 Matricula.cs
+│   │   ├── 📄 MatriculaInfo.cs
+│   │   ├── 📄 MatriculaProgramaInfo.cs
+│   │   ├── 📄 PlanPagoItem.cs
+│   │   ├── 📄 Profesor.cs
+│   │   └── 📄 ProfesorInfo.cs
+│   └── 📂 Interfaces
+│       ├── 📄 IAlumnoRepository.cs
+│       ├── 📄 IDbConnectionFactory.cs
+│       ├── 📄 IMaestroRepository.cs
+│       ├── 📄 IMatriculaCarreraRepository.cs
+│       ├── 📄 IMatriculaProgramaRepository.cs
+│       ├── 📄 IProfesorRepository.cs
+│       └── 📄 IValidacionMatriculaRepository.cs
+├── 📂 Academic.Infrastructure
+│   ├── 📎 Academic.Application
+│   └── 📎 Academic.Domain
+│   ├── 📂 Data
+│   ├── 📂 Repositories
+│   └── 📄 DependencyInjection.cs
+└── 📂 Academic.Persistence
+    ├── 📎 Academic.Application
+    └── 📎 Academic.Domain
+    ├── 📂 Data
+    │   └── 📄 DapperContext.cs
+    ├── 📂 Repositories
+    │   ├── 📄 AlumnoRepository.cs
+    │   ├── 📄 MaestroRepository.cs
+    │   ├── 📄 MatriculaCarreraRepository.cs
+    │   ├── 📄 MatriculaProgramaRepository.cs
+    │   ├── 📄 ProfesorRepository.cs
+    │   └── 📄 ValidacionMatriculaRepository.cs
+    └── 📄 DependencyInjection.cs

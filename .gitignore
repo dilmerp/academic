@@ -1,0 +1,36 @@
+# =========================
+# .NET / Backend Ignores
+# =========================
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+.vs/
+*.user
+*.suo
+*.dbmdl
+*.jfm
+appsettings.Development.json
+appsettings.Secret.json
+
+# =========================
+# Node / Angular Ignores
+# =========================
+node_modules/
+dist/
+.angular/
+/.npm/
+/coverage/
+.env
+
+# =========================
+# OS / Editor Ignores
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Docker Ignores
+# =========================
+.dockerignore

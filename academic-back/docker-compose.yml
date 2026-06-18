@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  redis_cache_academic:
+    image: redis:alpine
+    container_name: redis_cache_academic
+    restart: always
+    ports:
+      - "6380:6379"

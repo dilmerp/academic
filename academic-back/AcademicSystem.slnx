@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Academic.Api/Academic.Api.csproj" />
+  <Project Path="Academic.Application/Academic.Application.csproj" />
+  <Project Path="Academic.Domain/Academic.Domain.csproj" />
+  <Project Path="Academic.Infrastructure/Academic.Infrastructure.csproj" />
+  <Project Path="Academic.Persistence/Academic.Persistence.csproj" Id="cf9ca433-5c63-4511-a3c1-bd57c1df4f94" />
+</Solution>

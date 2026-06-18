@@ -1,0 +1,53 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Actualizar Contraseña</h2>
+      <p class="subtitle">Por políticas de protección institucional, es obligatorio cambiar tu contraseña en este primer inicio de sesión.</p>
+    </div>
+
+    <form [formGroup]="actualizarClaveForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="nuevaClave">Nueva Contraseña</label>
+        <input
+          id="nuevaClave"
+          type="password"
+          formControlName="nuevaClave"
+          placeholder="Introduce tu nueva contraseña"
+          [class.input-error]="actualizarClaveForm.get('nuevaClave')?.touched && actualizarClaveForm.get('nuevaClave')?.invalid"
+        />
+        <div *ngIf="actualizarClaveForm.get('nuevaClave')?.touched && actualizarClaveForm.get('nuevaClave')?.hasError('required')" class="error-msg">
+          La contraseña es obligatoria.
+        </div>
+        <div *ngIf="actualizarClaveForm.get('nuevaClave')?.touched && actualizarClaveForm.get('nuevaClave')?.hasError('minlength')" class="error-msg">
+          La contraseña debe tener al menos 6 caracteres.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmarClave">Confirmar Nueva Contraseña</label>
+        <input
+          id="confirmarClave"
+          type="password"
+          formControlName="confirmarClave"
+          placeholder="Repite tu nueva contraseña"
+          [class.input-error]="actualizarClaveForm.get('confirmarClave')?.touched && (actualizarClaveForm.get('confirmarClave')?.invalid || actualizarClaveForm.hasError('mismatch'))"
+        />
+        <div *ngIf="actualizarClaveForm.get('confirmarClave')?.touched && actualizarClaveForm.get('confirmarClave')?.hasError('required')" class="error-msg">
+          Debes confirmar la contraseña.
+        </div>
+        <div *ngIf="actualizarClaveForm.get('confirmarClave')?.touched && actualizarClaveForm.hasError('mismatch') && !actualizarClaveForm.get('confirmarClave')?.hasError('required')" class="error-msg">
+          Las contraseñas ingresadas no coinciden.
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="isLoading" class="btn-primary">
+        {{ isLoading ? 'Guardando cambios...' : 'Actualizar Credenciales' }}
+      </button>
+    </form>
+  </div>
+</div>
