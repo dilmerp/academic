@@ -19,8 +19,8 @@ public class ProfesorRepository(DapperContext context) : IProfesorRepository
         using var connection = context.CreateConnection();
 
         var command = new CommandDefinition(
-            commandText: "up_sel_actor_profesor_all",
-            commandType: CommandType.StoredProcedure,
+            commandText: "SELECT * FROM public.up_sel_actor_profesor_all()",
+            commandType: CommandType.Text,
             cancellationToken: cancellationToken
         );
 

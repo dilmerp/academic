@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using Academic.Domain.Interfaces;
-using Npgsql; // Cambiamos el cliente a PostgreSQL
+using Npgsql; 
 using Microsoft.Extensions.Configuration;
 
 namespace Academic.Persistence.Data;

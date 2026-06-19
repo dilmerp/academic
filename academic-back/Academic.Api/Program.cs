@@ -43,6 +43,8 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins(
+                    "http://localhost:4201",
+                    "https://localhost:4201",
                     "http://localhost:4200",
                     "https://localhost:4200",
                     "https://7p7s35xz-7241.brs.devtunnels.ms",

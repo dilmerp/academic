@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------
+  # 1. Base de Datos: PostgreSQL
+  # ----------------------------------------------------
+  academic_db:
+    container_name: academic_postgres
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: academic_admin
+      POSTGRES_PASSWORD: AcademicSecurePassword2026!
+      POSTGRES_DB: academic_db
+    ports:
+      - "5434:5432" # Puerto modificado a 5434 para evitar conflictos locales
+    volumes:
+      - academic_pgdata:/var/lib/postgresql/data
+    networks:
+      - academic_network
+
+  # ----------------------------------------------------
+  # 2. Caché Distribuido: Redis
+  # ----------------------------------------------------
+  academic_cache:
+    container_name: academic_redis
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6381:6379" # Puerto modificado a 6381 para evitar conflictos locales
+    volumes:
+      - academic_redisdata:/data
+    networks:
+      - academic_network
+
+  # ----------------------------------------------------
+  # 3. Backend: .NET 10 Web API (MediatR + Dapper + Scalar)
+  # ----------------------------------------------------
+  academic_backend:
+    container_name: academic_api
+    image: academic-back:latest
+    build:
+      context: ./academic-back
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - academic_db
+      - academic_cache
+    ports:
+      - "8085:8080" # Puerto modificado a 8082 para evitar conflictos locales
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=academic_db;Port=5432;Database=academic_db;Username=academic_admin;Password=AcademicSecurePassword2026!
+      - Redis__RedisConnection=academic_cache:6379,abortConnect=false
+      
+      # VARIABLES ACTUALIZADAS PARA HACER MATCH CON TU CÓDIGO
+      - JwtSettings__SecretKey=TuClaveMaestraSuperSecretaYFuerteParaAcademic2026!
+      - JwtSettings__Issuer=AcademicAPI
+      - JwtSettings__Audience=AcademicFront
+      
+    networks:
+      - academic_network
+
+  # ----------------------------------------------------
+  # 4. Frontend: Angular + Nginx
+  # ----------------------------------------------------
+  academic_frontend:
+    container_name: academic_ui
+    image: academic-front:latest
+    build:
+      context: ./academic-front
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - academic_backend
+    ports:
+      - "4201:80" # Este puerto estaba libre, se mantiene igual
+    networks:
+      - academic_network
+
+# ----------------------------------------------------
+# Volúmenes Persistentes y Redes Aisladas
+# ----------------------------------------------------
+volumes:
+  academic_pgdata:
+    driver: local
+  academic_redisdata:
+    driver: local
+
+networks:
+  academic_network:
+    driver: bridge
