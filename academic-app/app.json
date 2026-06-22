@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Academic App",
+    "slug": "appAcademic",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "newArchEnabled": false,
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.dpalomino.appAcademic"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ed2a9fc9-450e-4654-9464-1fd62c52db92"
+      }
+    }
+  }
+}

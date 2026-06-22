@@ -18,6 +18,7 @@ namespace Academic.Api.Controllers;
 
 public class AlumnosController(IMediator mediator) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
