@@ -15,13 +15,21 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 
+// --- SEGURIDAD Y AUTENTICACIÓN ---
+import LoginScreen from './src/presentation/LoginScreen';
+import ActualizarClaveScreen from './src/presentation/ActualizarClaveScreen';
+
+// --- COMPONENTES PRINCIPALES ---
 import { DashboardScreen } from './src/presentation/DashboardScreen';
 import { ProfesoresScreen } from './src/presentation/ProfesoresScreen';
 import { AlumnosScreen } from './src/presentation/AlumnosScreen';
 
-// --- NUEVOS COMPONENTES PARA MATRÍCULAS ---
+// --- COMPONENTES PARA MATRÍCULAS ---
 import { MatriculaCarreraListScreen } from './src/presentation/MatriculaCarreraListScreen';
 import { MatriculaCarreraFormScreen } from './src/presentation/MatriculaCarreraFormScreen';
+
+// (Opcional) Importamos el authService si deseas limpiar el SecureStore al cerrar sesión directamente desde aquí
+import { authService } from './src/services/authService';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +41,7 @@ const MatriculasStack = () => (
   </Stack.Navigator>
 );
 
-const MenuLateral = ({ visible, onClose, navigateTo, currentRoute }) => {
+const MenuLateral = ({ visible, onClose, navigateTo, currentRoute, handleLogout }) => {
   // Estado para controlar qué submenú está abierto
   const [activeSubMenu, setActiveSubMenu] = useState(null);
 
@@ -137,7 +145,7 @@ const MenuLateral = ({ visible, onClose, navigateTo, currentRoute }) => {
           </View>
 
           <View style={styles.drawerFooter}>
-            <TouchableOpacity style={styles.logoutButton}>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
               <Ionicons name="log-out-outline" size={22} color="#EF4444" />
               <Text style={styles.logoutText}>Cerrar Sesión</Text>
             </TouchableOpacity>
@@ -151,7 +159,7 @@ const MenuLateral = ({ visible, onClose, navigateTo, currentRoute }) => {
 
 export default function App() {
   const [menuVisible, setMenuVisible] = useState(false);
-  const [currentRoute, setCurrentRoute] = useState('Dashboard');
+  const [currentRoute, setCurrentRoute] = useState('Login');
   const navigationRef = useNavigationContainerRef();
 
   const handleNavigate = (screenName) => {
@@ -159,6 +167,22 @@ export default function App() {
     setMenuVisible(false);
     if (navigationRef.isReady()) {
       navigationRef.navigate(screenName);
+    }
+  };
+
+  const executeLogout = async () => {
+    try {
+      await authService.logout(); // Limpia la bóveda de seguridad
+    } catch (e) {
+      console.log('Error limpiando sesión', e);
+    }
+    setMenuVisible(false);
+    if (navigationRef.isReady()) {
+      // Limpia el historial de navegación y te deja en la pantalla de Login
+      navigationRef.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
     }
   };
 
@@ -176,7 +200,7 @@ export default function App() {
         if (current) setCurrentRoute(current);
       }}>
         <Stack.Navigator
-          initialRouteName="Dashboard"
+          initialRouteName="Login"
           screenOptions={{
             headerLeft: () => <CustomHeaderLeft />,
             headerStyle: { backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#F1F5F9' },
@@ -185,16 +209,39 @@ export default function App() {
             headerTitleAlign: 'center',
           }}
         >
+          {/* --- FLUJO DE AUTENTICACIÓN --- */}
+          <Stack.Screen 
+            name="Login" 
+            component={LoginScreen} 
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen 
+            name="ActualizarClave" 
+            component={ActualizarClaveScreen} 
+            options={{ 
+              title: 'Actualizar Credenciales', 
+              headerLeft: () => null // Sobrescribe la hamburguesa para no dejar escapar al usuario
+            }} 
+          />
+
+          {/* --- FLUJO INTERNO DEL SISTEMA --- */}
           <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ title: 'Inicio' }} />
           <Stack.Screen name="Profesores" component={ProfesoresScreen} options={{ title: 'Docentes' }} />
           <Stack.Screen name="Alumnos" component={AlumnosScreen} options={{ title: 'Alumnos' }} />
           
-          {/* NUEVO STACK DE MATRÍCULAS QUE SE MUESTRA EN EL HEADER COMO UN SOLO TÍTULO */}
+          {/* STACK DE MATRÍCULAS QUE SE MUESTRA EN EL HEADER COMO UN SOLO TÍTULO */}
           <Stack.Screen name="Matriculas" component={MatriculasStack} options={{ title: 'Matrículas de Carreras' }} />
         </Stack.Navigator>
       </NavigationContainer>
 
-      <MenuLateral visible={menuVisible} onClose={() => setMenuVisible(false)} navigateTo={handleNavigate} currentRoute={currentRoute} />
+      {/* El menú lateral solo se renderiza por encima de todo cuando menuVisible es true */}
+      <MenuLateral 
+        visible={menuVisible} 
+        onClose={() => setMenuVisible(false)} 
+        navigateTo={handleNavigate} 
+        currentRoute={currentRoute} 
+        handleLogout={executeLogout}
+      />
     </SafeAreaView>
   );
 }

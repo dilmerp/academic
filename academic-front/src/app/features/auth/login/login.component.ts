@@ -16,6 +16,9 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
+  // Nuevo estado para controlar la visibilidad de la contraseña
+  showPassword = false;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -23,8 +26,13 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       login: ['', Validators.required],
-      clave: [''] // El backend lo ignora, pero el DTO lo requiere
+      clave: ['']
     });
+  }
+
+  // Método para alternar el ojito
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit(): void {
@@ -36,26 +44,29 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value).subscribe({
+    // Limpieza preventiva de espacios en blanco (igual que en React Native)
+    const formValue = this.loginForm.value;
+    const payload = {
+      ...formValue,
+      login: formValue.login.trim()
+    };
+
+    this.authService.login(payload).subscribe({
       next: (response) => {
         this.isLoading = false;
-
-        // Evaluamos la bandera de seguridad que retorna el backend (.NET la envía en camelCase)
         if (response && response.requiereCambioClave === true) {
-          // Redirige a la pantalla de actualización.
-          // Ajusta '/actualizar-clave' a la ruta exacta que definas en tu app.routes.ts
           this.router.navigate(['/actualizar-clave']);
         } else {
-          // Flujo normal si la bandera es false
           this.router.navigate(['/dashboard']);
         }
       },
       error: (err) => {
         this.isLoading = false;
         if (err.status === 401) {
-          this.errorMessage = 'Usuario no encontrado o acceso denegado.';
+          this.errorMessage = 'Usuario o contraseña incorrectos.';
         } else {
-          this.errorMessage = 'Error de conexión con el servidor.';
+          // Extraer el mensaje real del backend si existe
+          this.errorMessage = err.error?.message || err.error?.title || 'Error de conexión con el servidor.';
         }
       }
     });

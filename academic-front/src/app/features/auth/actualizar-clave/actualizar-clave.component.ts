@@ -8,14 +8,18 @@ import { AuthService } from '../../../core/services/auth.service';
   selector: 'app-actualizar-clave',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './../../../features/auth/actualizar-clave/actualizar-clave.component.html',
-  styleUrls: ['./../../../features/auth/actualizar-clave/actualizar-clave.component.css']
+  templateUrl: './actualizar-clave.component.html',
+  styleUrls: ['./actualizar-clave.component.css']
 })
 export class ActualizarClaveComponent implements OnInit {
   actualizarClaveForm: FormGroup;
   isLoading = false;
   errorMessage = '';
   loginUser = '';
+
+  // Controles independientes para los ojitos
+  showNuevaClave = false;
+  showConfirmarClave = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,10 +33,7 @@ export class ActualizarClaveComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Recupera el login que guardó el AuthService de forma automática en el paso anterior
     this.loginUser = localStorage.getItem('login') || '';
-
-    // Protección de ruta: Si no hay un usuario registrado en el flujo, se expulsa al login
     if (!this.loginUser) {
       this.router.navigate(['/auth/login']);
     }
@@ -42,6 +43,15 @@ export class ActualizarClaveComponent implements OnInit {
     const nueva = form.get('nuevaClave')?.value;
     const confirmar = form.get('confirmarClave')?.value;
     return nueva === confirmar ? null : { mismatch: true };
+  }
+
+  // Métodos para alternar visibilidad
+  toggleNuevaClave(): void {
+    this.showNuevaClave = !this.showNuevaClave;
+  }
+
+  toggleConfirmarClave(): void {
+    this.showConfirmarClave = !this.showConfirmarClave;
   }
 
   onSubmit(): void {
@@ -61,13 +71,11 @@ export class ActualizarClaveComponent implements OnInit {
     this.authService.actualizarClave(payload).subscribe({
       next: () => {
         this.isLoading = false;
-        // Una vez cambiada con éxito en la BD, la bandera pasa a false y entra directo al sistema
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'Hubo un problema al procesar el cambio de clave institucional.';
-        console.error(err);
+        this.errorMessage = err.error?.message || 'Hubo un problema al procesar el cambio de clave institucional.';
       }
     });
   }
