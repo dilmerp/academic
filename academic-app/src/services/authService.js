@@ -1,7 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
 
 // Utilizando la URL de tu Dev Tunnel activo para las pruebas
-const API_URL = 'https://4fg4xs9d-7241.brs.devtunnels.ms/api/Auth';
+//const API_URL = 'https://4fg4xs9d-7241.brs.devtunnels.ms/api/Auth';
+
+const API_URL = 'https://cloudacademic.onrender.com/api/Auth';
 
 export const authService = {
   login: async (credentials) => {
