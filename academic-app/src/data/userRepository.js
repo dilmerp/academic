@@ -5,7 +5,8 @@
 import * as SecureStore from 'expo-secure-store';
 
 export const fetchUsersFromApi = async () => {
-  const API_URL = 'https://4fg4xs9d-7241.brs.devtunnels.ms/api/Alumnos';
+  // URL actualizada apuntando al entorno de producción en Render
+  const API_URL = 'https://cloudacademic.onrender.com/api/Alumnos';
 
   try {
     // 1. Recuperamos el token de la bóveda de seguridad del celular
