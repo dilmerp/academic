@@ -13,19 +13,28 @@ public class LoginCommandHandler(IUsuarioRepository usuarioRepository, IJwtProvi
 {
     public async Task<AuthResponseDto> Handle(LoginCommand command, CancellationToken ct)
     {
-        // 1. Buscar usuario en la base de datos usando solo el Login
+        // 1. Buscar usuario en la base de datos
         var usuario = await usuarioRepository.GetByLoginAsync(command.Request.Login);
 
-        // 2. Validar únicamente la existencia del usuario (se ignora la clave)
+        // 2. Validar si el usuario NO existe
         if (usuario == null)
         {
-            throw new UnauthorizedAccessException("Usuario no encontrado.");
+            // Usamos un mensaje genérico por seguridad
+            throw new UnauthorizedAccessException("Las credenciales ingresadas son incorrectas.");
         }
 
-        // 3. Generar JWT usando el servicio de infraestructura
+        // 3. Validar la CONTRASEÑA (El paso que faltaba)
+        // Nota: Asegúrate de que las propiedades coincidan con los nombres exactos de tus entidades/DTOs.
+        // Si a futuro usas Hashes (ej. BCrypt), aquí usarías BCrypt.Verify() en lugar del ==
+        if (usuario.clave != command.Request.Clave)
+        {
+            throw new UnauthorizedAccessException("Las credenciales ingresadas son incorrectas.");
+        }
+
+        // 4. Generar JWT usando el servicio de infraestructura
         var token = jwtProvider.Generate(usuario.idusuario, usuario.nombre, "ADMIN");
 
-        // 4. Retornar el DTO usando el constructor posicional del record
+        // 5. Retornar el DTO usando el constructor posicional del record
         return new AuthResponseDto(
             token,
             usuario.nombre,
